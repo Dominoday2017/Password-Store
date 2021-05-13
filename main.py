@@ -1,14 +1,11 @@
-from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import *
 from PyQt5.uic import loadUi
 from PyQt5 import QtWidgets
 from cryptography.fernet import Fernet
-from PyQt5 import QtCore
-from PyQt5.QtCore import QTimer
 import pyperclip
 import os
 import sys
-import time
+
 
 class LoginWidget(QDialog):
     def __init__(self, parent=None):
@@ -60,10 +57,10 @@ class LoginWidget(QDialog):
             self.registration_label.setStyleSheet("background-color: green")
             self.registration_label.show()
 
-    def encrypt(self, message: bytes, key: bytes) -> bytes:        #resposible for encrypt password
+    def encrypt(self, message: bytes, key: bytes) -> bytes:
         return Fernet(key).encrypt(message)
 
-    def decrypt(self, token: bytes, key: bytes) -> bytes:          #responsible for decrypt password
+    def decrypt(self, token: bytes, key: bytes) -> bytes:
         return Fernet(key).decrypt(token)
 
     def make_correct(self, text):
@@ -91,8 +88,8 @@ class MainWindow(QMainWindow):
         self.resetApp_btn.clicked.connect(self.reset_app)
         self.copy_btn.clicked.connect(self.copy_password)
 
-    def add_password(self):                                       #resposible for: take input data, create string like: ffff//ffff//fff,
-        password_input = self.addItem_lineEdit.text()             # run function with will save this string to file, then run function with will display data
+    def add_password(self):
+        password_input = self.addItem_lineEdit.text()
         key = self.read_key()
 
         if password_input == "":
@@ -196,21 +193,15 @@ class MainWindow(QMainWindow):
                     spam = pyperclip.paste()
                     self.display_notification("Password copied to clipborad", "green")
 
-    # TODO add hiding label after x time
     def display_notification(self, text, color):
         self.notification_label.show()
         self.notification_label.setText(text)
         self.notification_label.setStyleSheet("background-color: " + color)
 
-        # timer = QTimer()
-        # timer.timeout.connect()
-        # timer.setInterval(1)
-        # timer.start()
-
     def hide_notification(self):
         self.notification_label.hide()
 
-    def reset_app(self):                                           #responsible for reseting app to fabric settings
+    def reset_app(self):
         self.passwordList_widget.clear()
         with open("key.txt", "w") as key:
             pass
@@ -219,13 +210,13 @@ class MainWindow(QMainWindow):
         self.hide()
         self.__init__()
 
-    def encrypt(self, message: bytes, key: bytes) -> bytes:        #resposible for encrypt password
+    def encrypt(self, message: bytes, key: bytes) -> bytes:
         return Fernet(key).encrypt(message)
 
-    def decrypt(self, token: bytes, key: bytes) -> bytes:          #responsible for decrypt password
+    def decrypt(self, token: bytes, key: bytes) -> bytes:
         return Fernet(key).decrypt(token)
 
-    def gen_key(self):                                             #responsible for genereting key if not exist
+    def gen_key(self):
         if os.stat("key.txt").st_size == 0:
             with open("key.txt", "wb+") as file:
                 key = Fernet.generate_key()
@@ -235,13 +226,13 @@ class MainWindow(QMainWindow):
         else:
             pass
 
-    def read_key(self):                                            #resposible for reading key from file
+    def read_key(self):
         with open("key.txt", "rb") as file:
             key = file.readline()
             file.close()
             return key
 
-    def create_password_file(self):                                #resposible for creating passwords file if not exist
+    def create_password_file(self):
         with open("passwords.txt", "x") as file:
             pass
 
