@@ -6,8 +6,8 @@ If you want add new position to password storager type in format like:
 microsoft//your_email_adress//your_password//other_notes(not requierd)
 
 Libraries need to run this apliacation:
-PyQt5
-cryptography fernet
+PyQt5,
+cryptography fernet,
 pyperclip
 
 IMPORTANT!
